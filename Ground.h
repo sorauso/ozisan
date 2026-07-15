@@ -1,0 +1,32 @@
+#pragma once
+#include "Engine/GameObject.h"
+#include <vector>
+
+class Ground :
+	public GameObject
+{
+	int hSilly;
+	std::vector<std::vector<int>>mapdata;
+	int mapWomdth;
+	int mapHeight;
+public:
+	//コンストラクタ
+	//引数：parent  親オブジェクト（SceneManager）
+	Ground(GameObject* parent);
+
+	//初期化
+	void Initialize() override;
+
+	//更新
+	void Update() override;
+
+	//描画
+	void Draw() override;
+
+	//開放
+	void Release() override;
+
+	bool IsPositionInBox(XMFLOAT3 p);
+	bool IsPointInBox(int x, int z);
+};
+
