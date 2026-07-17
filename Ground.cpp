@@ -39,10 +39,17 @@ void Ground::Initialize()
 			Box* box = Instantiate<Box>(this);
 			box->SetBoxPoint(x, z);
 		}
-		else
+		else if (mapdata[z][x] == 2)
 		{
 			Esa* esa = Instantiate<Esa>(this);
 			esa->SetEsaPoint(x, z);
+			esa->SetEsaType(ESA_TYPE_NORMAL);
+		}
+		else if (mapdata[z][x] == 3)
+		{
+			Esa* esa = Instantiate<Esa>(this);
+			esa->SetEsaPoint(x, z);
+			esa->SetEsaType(ESA_TYPE_POWER);
 		}
 	}
 }
@@ -63,24 +70,24 @@ void Ground::Release()
 }
 
 
-bool Ground::IsPointInBox(int x, int z)
+int Ground::IsPointInBox(int x, int z)
 {
 	if (x >= mapdata.size() || x <= -1
 		|| z >= mapdata.size() || z <= -1)
 	{
 		return 1;
 	}
-	bool num = mapdata[z][x];
+	int num = mapdata[z][x];
 	return num;
 }
 
-bool Ground::IsPositionInBox(XMFLOAT3 p)
+int Ground::IsPositionInBox(XMFLOAT3 p)
 {
 	const float BOX_SCALE_SIZE = 3.34f;
 	float pxF = p.x + BOX_SCALE_SIZE * 6;
 	float pzF = (p.z * -1) + BOX_SCALE_SIZE * 6;
 	int px = (pxF / BOX_SCALE_SIZE);
 	int pz = (pzF / BOX_SCALE_SIZE);
-	bool num = IsPointInBox(px, pz);
+	int num = IsPointInBox(px, pz);
 	return num;
 }

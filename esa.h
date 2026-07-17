@@ -1,12 +1,20 @@
 #pragma once
 #include "Engine/GameObject.h"
 
+enum ESA_TYPE
+{
+	ESA_TYPE_NORMAL,
+	ESA_TYPE_POWER,
+	ESA_TYPE_MAX
+};
 
 
 class Esa :
 	public GameObject
 {
+	ESA_TYPE myType_;
 	int hDrawModel;
+	float counter_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
@@ -24,5 +32,7 @@ public:
 	//開放
 	void Release() override;
 	void SetEsaPoint(int x, int z);
+	void SetEsaType(ESA_TYPE by);
+	void OnCollision(GameObject* terget) override;
 };
 

@@ -1,18 +1,29 @@
 #include "esa.h"
 #include "Engine/Model.h"
+#include "Engine/Collider.h"
 
 Esa::Esa(GameObject* parent)
-	:GameObject(parent), hDrawModel(-1)
+	:GameObject(parent), hDrawModel(-1),myType_(ESA_TYPE_NORMAL),counter_(-1)
 {
 }
 
 void Esa::Initialize()
 {
 	hDrawModel = Model::Load("esa.fbx");
+	transform_.scale_ = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	counter_ = (float)(rand() % 100) / 100;
+	SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0, 0), 1.0f);
+	AddCollider(collision);
 }
 
 void Esa::Update()
 {
+	counter_+= 0.1f;
+	transform_.position_.y = (sinf(counter_) / 2) + 1;
+	if (myType_ == ESA_TYPE_POWER)
+	{
+		transform_.rotate_.y += 1;
+	}
 }
 
 void Esa::Draw()
@@ -32,4 +43,21 @@ void Esa::SetEsaPoint(int x, int z)
 	int pX = x - 6;
 	int pZ = (z * -1) + 5;
 	transform_.position_ = XMFLOAT3((pX * SCALE_SIZE) + SCALE_SIZE / 2, 1, (pZ * SCALE_SIZE) + SCALE_SIZE / 2);
+}
+
+void Esa::SetEsaType(ESA_TYPE by)
+{
+	myType_ = by;
+	if (myType_ == ESA_TYPE_POWER)
+	{
+		transform_.scale_ = XMFLOAT3(1, 1, 1);
+	}
+}
+
+void Esa::OnCollision(GameObject* terget)
+{
+	if (terget->GetObjectName() == "Player")
+	{
+		KillMe();
+	}
 }

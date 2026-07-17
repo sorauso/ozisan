@@ -4,6 +4,7 @@
 #include "Ground.h"
 #include "Engine/Input.h"
 #include "Engine/Camera.h"
+#include "Engine/Collider.h"
 
 namespace
 {
@@ -53,7 +54,7 @@ namespace
 }
 
 Player::Player(GameObject* parent)
-	:GameObject(parent), hDrawModel(-1), hWokingModel(-1), hStandModel(-1) {
+	:GameObject(parent,"Player"), hDrawModel(-1), hWokingModel(-1), hStandModel(-1) {
 	//swordDirには、初期方向として、ローカルモデルの剣の根っこから
 	//先端までのベクトルとして（0,1,0)を代入しておく
 	//初期位置は原点
@@ -74,6 +75,8 @@ void Player::Initialize()
 	XMFLOAT3 CameraPos = CAMERA_POSITION[cAngle];
 	Camera::SetTarget(teagetPos);
 	Camera::SetPosition(CameraPos);
+	SphereCollider* collision = new SphereCollider(XMFLOAT3(0, 0, 0), 1.0f);
+	AddCollider(collision);
 }
 
 void Player::Update()
@@ -156,7 +159,7 @@ void Player::Update()
 	Ground* ts = (Ground*)this->GetParent();
 	XMFLOAT3 pPos;
 	XMStoreFloat3(&pPos, pos);
-	if (not ts->IsPositionInBox(pPos))
+	if (ts->IsPositionInBox(pPos) != 1)
 	{
 		XMStoreFloat3(&transform_.position_, pos);
 	}

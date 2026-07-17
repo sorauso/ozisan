@@ -26,7 +26,7 @@ public:
 	//開放
 	void Release() override;
 
-	bool IsPositionInBox(XMFLOAT3 p);
-	bool IsPointInBox(int x, int z);
+	int IsPositionInBox(XMFLOAT3 p);
+	int IsPointInBox(int x, int z);
 };
 
