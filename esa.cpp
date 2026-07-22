@@ -1,6 +1,7 @@
 #include "esa.h"
 #include "Engine/Model.h"
 #include "Engine/Collider.h"
+#include "TestScene.h"
 
 Esa::Esa(GameObject* parent)
 	:GameObject(parent), hDrawModel(-1),myType_(ESA_TYPE_NORMAL),counter_(-1)
@@ -34,7 +35,16 @@ void Esa::Draw()
 
 void Esa::Release()
 {
-
+	TestScene* tsesce = (TestScene*)this->GetParent()->GetParent();
+	tsesce->DownEsaNoKazu();
+	if (myType_ == ESA_TYPE_POWER)
+	{
+		tsesce->UpScore(10);
+	}
+	else
+	{
+		tsesce->UpScore(5);
+	}
 }
 
 void Esa::SetEsaPoint(int x, int z)

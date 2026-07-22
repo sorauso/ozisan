@@ -6,6 +6,7 @@
 #include "Box.h"
 #include "Player.h"
 #include "esa.h"
+#include "TestScene.h"
 
 Ground::Ground(GameObject* parent)
 	:GameObject(parent), hSilly(-1),mapWomdth(-1),mapHeight(-1)
@@ -30,29 +31,32 @@ void Ground::Initialize()
 	hSilly = Model::Load("UVCheker.fbx");
 	Model::SetAnimFrame(hSilly, 0, 59, 1.0);
 	Instantiate<Player>(this);
+	TestScene* tsesce = (TestScene*)this->GetParent();
 	for (int z = 0;z < mapHeight;z++)
-{
-	for (int x = 0;x < mapWomdth;x++)
 	{
-		if (mapdata[z][x] == 1)
+		for (int x = 0;x < mapWomdth;x++)
 		{
-			Box* box = Instantiate<Box>(this);
-			box->SetBoxPoint(x, z);
-		}
-		else if (mapdata[z][x] == 2)
-		{
-			Esa* esa = Instantiate<Esa>(this);
-			esa->SetEsaPoint(x, z);
-			esa->SetEsaType(ESA_TYPE_NORMAL);
-		}
-		else if (mapdata[z][x] == 3)
-		{
-			Esa* esa = Instantiate<Esa>(this);
-			esa->SetEsaPoint(x, z);
-			esa->SetEsaType(ESA_TYPE_POWER);
+			if (mapdata[z][x] == 1)
+			{
+				Box* box = Instantiate<Box>(this);
+				box->SetBoxPoint(x, z);
+			}
+			else if (mapdata[z][x] == 2)
+			{
+				Esa* esa = Instantiate<Esa>(this);
+				esa->SetEsaPoint(x, z);
+				esa->SetEsaType(ESA_TYPE_NORMAL);
+				tsesce->UpEsaNoKazu();
+			}
+			else if (mapdata[z][x] == 3)
+			{
+				Esa* esa = Instantiate<Esa>(this);
+				esa->SetEsaPoint(x, z);
+				esa->SetEsaType(ESA_TYPE_POWER);
+				tsesce->UpEsaNoKazu();
+			}
 		}
 	}
-}
 }
 
 void Ground::Update()
