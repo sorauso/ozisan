@@ -38,7 +38,7 @@ namespace
 		XMVectorSet(0,0,-1,0)
 	};
 	float PLAYER_ANGLE[PLAYER_DIRECTION::P_DIRECTION_MAX] = { 90,270,180,0 };
-	XMFLOAT3 CAMERA_POSITION_BACE = XMFLOAT3(25,20,0);
+	XMFLOAT3 CAMERA_POSITION_BACE = XMFLOAT3(25, 20, 0);
 	XMFLOAT3 CAMERA_POSITION[CAMERA_ANGLE::C_DIRECTION_MAX] = {
 		XMFLOAT3(-CAMERA_POSITION_BACE.x,CAMERA_POSITION_BACE.y,0),
 		XMFLOAT3(CAMERA_POSITION_BACE.x,CAMERA_POSITION_BACE.y,0),
@@ -47,10 +47,17 @@ namespace
 	};
 
 	PLAYER_DIRECTION direction = PLAYER_DIRECTION::P_UP;
-	PLAYER_STATE state = PLAYER_STATE::P_STAND; 
+	PLAYER_STATE state = PLAYER_STATE::P_STAND;
 	CAMERA_ANGLE cAngle = CAMERA_ANGLE::C_DOWN;
 
 	float rot;
+
+	const int KeyID[4][4] = {
+		{ DIK_S, DIK_W, DIK_A, DIK_D },
+		{ DIK_W, DIK_S, DIK_D, DIK_A },
+		{ DIK_D, DIK_A, DIK_S, DIK_W },
+		{ DIK_A, DIK_D, DIK_W, DIK_S }
+	};
 }
 
 Player::Player(GameObject* parent)
@@ -91,31 +98,30 @@ void Player::Update()
 	if (state != PLAYER_STATE::P_TURN)
 	{
 		state = PLAYER_STATE::P_STAND;
-		if (Input::IsKey(DIK_A))
+		if (Input::IsKey(KeyID[(int)cAngle][0]))
 		{
 			direction = PLAYER_DIRECTION::P_LEFT;
 			state = PLAYER_STATE::P_WALKING;
 
 		}
-		if (Input::IsKey(DIK_D))
+		if (Input::IsKey(KeyID[(int)cAngle][1]))
 		{
 			direction = PLAYER_DIRECTION::P_RIGHT;
 			state = PLAYER_STATE::P_WALKING;
 
 		}
-		if (Input::IsKey(DIK_W))
+		if (Input::IsKey(KeyID[(int)cAngle][2]))
 		{
 			direction = PLAYER_DIRECTION::P_UP;
 			state = PLAYER_STATE::P_WALKING;
 
 		}
-		if (Input::IsKey(DIK_S))
+		if (Input::IsKey(KeyID[(int)cAngle][3]))
 		{
 			direction = PLAYER_DIRECTION::P_DOWN;
 			state = PLAYER_STATE::P_WALKING;
 
 		}
-		angleSawFromCamera();
 		if (oldDir != direction)
 		{
 			state = PLAYER_STATE::P_TURN;
@@ -183,6 +189,7 @@ void Player::Draw()
 
 void Player::Release()
 {
+	Model::Release(hDrawModel);
 }
 
 void Player::CameraMove()
@@ -230,30 +237,3 @@ void Player::CameraMove()
 	Camera::SetTarget(transform_.position_);
 }
 
-void Player::angleSawFromCamera()
-{
-	if (cAngle == CAMERA_ANGLE::C_DOWN) {
-		if (direction == PLAYER_DIRECTION::P_LEFT) { direction = PLAYER_DIRECTION::P_LEFT; }
-		else if (direction == PLAYER_DIRECTION::P_RIGHT) { direction = PLAYER_DIRECTION::P_RIGHT; }
-		else if (direction == PLAYER_DIRECTION::P_UP) { direction = PLAYER_DIRECTION::P_UP; }
-		else if (direction == PLAYER_DIRECTION::P_DOWN) { direction = PLAYER_DIRECTION::P_DOWN; }
-	}
-	else if (cAngle == CAMERA_ANGLE::C_UP) {
-		if (direction == PLAYER_DIRECTION::P_LEFT) { direction = PLAYER_DIRECTION::P_RIGHT; }
-		else if (direction == PLAYER_DIRECTION::P_RIGHT) { direction = PLAYER_DIRECTION::P_LEFT; }
-		else if (direction == PLAYER_DIRECTION::P_UP) { direction = PLAYER_DIRECTION::P_DOWN; }
-		else if (direction == PLAYER_DIRECTION::P_DOWN) { direction = PLAYER_DIRECTION::P_UP; }
-	}
-	else if (cAngle == CAMERA_ANGLE::C_RIGHT) {
-		if (direction == PLAYER_DIRECTION::P_LEFT) { direction = PLAYER_DIRECTION::P_DOWN; }
-		else if (direction == PLAYER_DIRECTION::P_RIGHT) { direction = PLAYER_DIRECTION::P_UP; }
-		else if (direction == PLAYER_DIRECTION::P_UP) { direction = PLAYER_DIRECTION::P_LEFT; }
-		else if (direction == PLAYER_DIRECTION::P_DOWN) { direction = PLAYER_DIRECTION::P_RIGHT; }
-	}
-	else if (cAngle == CAMERA_ANGLE::C_LEFT) {
-		if (direction == PLAYER_DIRECTION::P_LEFT) { direction = PLAYER_DIRECTION::P_UP; }
-		else if (direction == PLAYER_DIRECTION::P_RIGHT) { direction = PLAYER_DIRECTION::P_DOWN; }
-		else if (direction == PLAYER_DIRECTION::P_UP) { direction = PLAYER_DIRECTION::P_RIGHT; }
-		else if (direction == PLAYER_DIRECTION::P_DOWN) { direction = PLAYER_DIRECTION::P_LEFT; }
-	}
-}

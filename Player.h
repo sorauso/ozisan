@@ -29,6 +29,5 @@ public:
 	void Release() override;
 private:
 	void CameraMove();
-	void angleSawFromCamera();
 };
 

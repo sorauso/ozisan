@@ -2,6 +2,8 @@
 #include "Player.h"
 #include "Ground.h"
 #include "Box.h"
+#include "Engine/Input.h"
+#include "Engine/sceneManager.h"
 
 
 //コンストラクタ
@@ -26,6 +28,11 @@ void TestScene::Initialize()
 //更新
 void TestScene::Update()
 {
+	if (esaNoKazu_ <= 0)
+	{
+		SceneManager* sm = (SceneManager*)this->GetParent();
+		sm->ChangeScene(SCENE_ID_RESULT);
+	}
 }
 
 //描画
@@ -39,5 +46,5 @@ void TestScene::Draw()
 //開放
 void TestScene::Release()
 {
-	pText_->Release();
+	//pText_->Release();
 }

@@ -27,6 +27,7 @@ void Box::Draw()
 
 void Box::Release()
 {
+	Model::Release(hDrawModel);
 }
 
 void Box::SetBoxPoint(int x, int z)

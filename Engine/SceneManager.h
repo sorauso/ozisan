@@ -5,10 +5,11 @@
 //ゲームに登場するシーン
 enum SCENE_ID
 {
-	SCENE_ID_TEST = 0,
+	SCENE_ID_TITLE = 0,
+	SCENE_ID_TEST = 1,
+	SCENE_ID_RESULT = 2,
 };
 
-//-----------------------------------------------------------
 //シーン切り替えを担当するオブジェクト
 //-----------------------------------------------------------
 class SceneManager : public GameObject

@@ -71,6 +71,7 @@ void Ground::Draw()
 
 void Ground::Release()
 {
+	Model::Release(hSilly);
 }
 
 

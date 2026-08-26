@@ -35,7 +35,12 @@ void Esa::Draw()
 
 void Esa::Release()
 {
+	Model::Release(hDrawModel);
 	TestScene* tsesce = (TestScene*)this->GetParent()->GetParent();
+	if (tsesce == nullptr)
+	{
+		return;
+	}
 	tsesce->DownEsaNoKazu();
 	if (myType_ == ESA_TYPE_POWER)
 	{
